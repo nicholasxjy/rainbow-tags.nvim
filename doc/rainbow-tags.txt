@@ -1,0 +1,64 @@
+*rainbow-tags.nvim*       Rainbow TSX tag highlights
+
+==============================================================================
+INTRODUCTION                                             *rainbow-tags*
+
+rainbow-tags.nvim highlights JSX/TSX tag names with configurable highlight
+groups. It uses Tree-sitter and ephemeral extmarks, and only renders visible
+window ranges.
+
+Example:
+>
+  <Helloworld />
+  <Tag />
+<
+
+==============================================================================
+SETUP                                                     *rainbow-tags-setup*
+>
+  require("rainbow-tags").setup({
+    highlight_groups = {
+      "RainbowDelimiterRed",
+      "RainbowDelimiterCyan",
+      "RainbowDelimiterYellow",
+    },
+    include_intrinsic = false,
+  })
+<
+
+Options:
+
+`enabled`                         Default: true
+    Enable highlighting by default.
+
+`filetypes`                       Default: typescriptreact, javascriptreact, tsx
+    Filetypes where the plugin attaches.
+
+`highlight_groups`                Default: RainbowDelimiterRed,
+                                  RainbowDelimiterCyan,
+                                  RainbowDelimiterYellow,
+                                  RainbowDelimiterGreen,
+                                  RainbowDelimiterOrange,
+                                  RainbowDelimiterViolet,
+                                  RainbowDelimiterBlue
+    Highlight groups used for tag names.
+
+`include_intrinsic`               Default: true
+    When false, lowercase HTML-like tags such as <div /> are skipped.
+
+`strategy`                        Default: "name"
+    "name" maps each tag name to a stable color. "sequence" cycles colors by
+    visible tag order.
+
+`create_default_highlights`       Default: true
+    Create default RainbowDelimiter* highlight groups when missing.
+
+==============================================================================
+COMMANDS                                                *rainbow-tags-commands*
+
+:RainbowTagsEnable [bufnr]        Enable highlighting for a buffer.
+:RainbowTagsDisable [bufnr]       Disable highlighting for a buffer.
+:RainbowTagsToggle [bufnr]        Toggle highlighting for a buffer.
+
+==============================================================================
+ vim:tw=78:ts=8:noet:ft=help:norl:
