@@ -22,13 +22,13 @@ With `lazy.nvim`:
   "your-name/rainbow-tags.nvim",
   opts = {
     highlight_groups = {
-      "RainbowDelimiterRed",
-      "RainbowDelimiterCyan",
-      "RainbowDelimiterYellow",
-      "RainbowDelimiterGreen",
-      "RainbowDelimiterOrange",
-      "RainbowDelimiterViolet",
-      "RainbowDelimiterBlue",
+      "RainbowTagsRed",
+      "RainbowTagsCyan",
+      "RainbowTagsYellow",
+      "RainbowTagsGreen",
+      "RainbowTagsOrange",
+      "RainbowTagsViolet",
+      "RainbowTagsBlue",
     },
   },
 }
@@ -45,13 +45,13 @@ require("rainbow-tags").setup({
   strategy = "name",
   create_default_highlights = true,
   highlight_groups = {
-    "RainbowDelimiterRed",
-    "RainbowDelimiterCyan",
-    "RainbowDelimiterYellow",
-    "RainbowDelimiterGreen",
-    "RainbowDelimiterOrange",
-    "RainbowDelimiterViolet",
-    "RainbowDelimiterBlue",
+    "RainbowTagsRed",
+    "RainbowTagsCyan",
+    "RainbowTagsYellow",
+    "RainbowTagsGreen",
+    "RainbowTagsOrange",
+    "RainbowTagsViolet",
+    "RainbowTagsBlue",
   },
 })
 ```
@@ -63,8 +63,11 @@ Options:
   through groups in visible order.
 - `include_intrinsic`: Set to `false` to skip lowercase HTML-like tags such as
   `<div />` and highlight only custom components such as `<Tag />`.
-- `create_default_highlights`: Set to `false` if your colorscheme or another
-  plugin already defines the configured groups.
+- `create_default_highlights`: Links the default `RainbowTags*` groups to
+  `RainbowDelimiterRed`, `RainbowDelimiterCyan`, `RainbowDelimiterYellow`,
+  `RainbowDelimiterGreen`, `RainbowDelimiterOrange`, `RainbowDelimiterViolet`,
+  and `RainbowDelimiterBlue`. If those target groups are missing, fallback
+  colors are created for them.
 
 Example custom groups:
 
@@ -75,6 +78,18 @@ vim.api.nvim_set_hl(0, "MyTagBlue", { fg = "#4dabf7", bold = true })
 require("rainbow-tags").setup({
   highlight_groups = { "MyTagRed", "MyTagBlue" },
 })
+```
+
+The default links are:
+
+```lua
+RainbowTagsRed    -> RainbowDelimiterRed
+RainbowTagsCyan   -> RainbowDelimiterCyan
+RainbowTagsYellow -> RainbowDelimiterYellow
+RainbowTagsGreen  -> RainbowDelimiterGreen
+RainbowTagsOrange -> RainbowDelimiterOrange
+RainbowTagsViolet -> RainbowDelimiterViolet
+RainbowTagsBlue   -> RainbowDelimiterBlue
 ```
 
 ## Commands

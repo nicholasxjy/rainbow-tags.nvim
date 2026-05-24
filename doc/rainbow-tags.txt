@@ -18,9 +18,9 @@ SETUP                                                     *rainbow-tags-setup*
 >
   require("rainbow-tags").setup({
     highlight_groups = {
-      "RainbowDelimiterRed",
-      "RainbowDelimiterCyan",
-      "RainbowDelimiterYellow",
+      "RainbowTagsRed",
+      "RainbowTagsCyan",
+      "RainbowTagsYellow",
     },
     include_intrinsic = false,
   })
@@ -34,13 +34,13 @@ Options:
 `filetypes`                       Default: typescriptreact, javascriptreact, tsx
     Filetypes where the plugin attaches.
 
-`highlight_groups`                Default: RainbowDelimiterRed,
-                                  RainbowDelimiterCyan,
-                                  RainbowDelimiterYellow,
-                                  RainbowDelimiterGreen,
-                                  RainbowDelimiterOrange,
-                                  RainbowDelimiterViolet,
-                                  RainbowDelimiterBlue
+`highlight_groups`                Default: RainbowTagsRed,
+                                  RainbowTagsCyan,
+                                  RainbowTagsYellow,
+                                  RainbowTagsGreen,
+                                  RainbowTagsOrange,
+                                  RainbowTagsViolet,
+                                  RainbowTagsBlue
     Highlight groups used for tag names.
 
 `include_intrinsic`               Default: true
@@ -51,7 +51,10 @@ Options:
     visible tag order.
 
 `create_default_highlights`       Default: true
-    Create default RainbowDelimiter* highlight groups when missing.
+    Link default RainbowTags* highlight groups to RainbowDelimiterRed,
+    RainbowDelimiterCyan, RainbowDelimiterYellow, RainbowDelimiterGreen,
+    RainbowDelimiterOrange, RainbowDelimiterViolet, and RainbowDelimiterBlue.
+    Fallback colors are created for missing RainbowDelimiter* groups.
 
 ==============================================================================
 COMMANDS                                                *rainbow-tags-commands*

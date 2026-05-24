@@ -3,6 +3,26 @@ local M = {}
 local ns = vim.api.nvim_create_namespace("rainbow-tags.nvim")
 
 local default_groups = {
+  "RainbowTagsRed",
+  "RainbowTagsCyan",
+  "RainbowTagsYellow",
+  "RainbowTagsGreen",
+  "RainbowTagsOrange",
+  "RainbowTagsViolet",
+  "RainbowTagsBlue",
+}
+
+local default_links = {
+  RainbowTagsRed = "RainbowDelimiterRed",
+  RainbowTagsCyan = "RainbowDelimiterCyan",
+  RainbowTagsYellow = "RainbowDelimiterYellow",
+  RainbowTagsGreen = "RainbowDelimiterGreen",
+  RainbowTagsOrange = "RainbowDelimiterOrange",
+  RainbowTagsViolet = "RainbowDelimiterViolet",
+  RainbowTagsBlue = "RainbowDelimiterBlue",
+}
+
+local delimiter_groups = {
   "RainbowDelimiterRed",
   "RainbowDelimiterCyan",
   "RainbowDelimiterYellow",
@@ -61,10 +81,14 @@ local function create_default_highlights()
     return
   end
 
-  for group, value in pairs(default_highlights) do
+  for group, link in pairs(default_links) do
+    vim.api.nvim_set_hl(0, group, { link = link, default = true })
+  end
+
+  for _, group in ipairs(delimiter_groups) do
     local existing = vim.api.nvim_get_hl(0, { name = group, link = false })
     if vim.tbl_isempty(existing) then
-      vim.api.nvim_set_hl(0, group, value)
+      vim.api.nvim_set_hl(0, group, default_highlights[group])
     end
   end
 end
@@ -235,6 +259,11 @@ function M.setup(user_config)
   attach_provider()
 
   vim.api.nvim_create_augroup("RainbowTags", { clear = true })
+  vim.api.nvim_create_autocmd("ColorScheme", {
+    group = "RainbowTags",
+    callback = create_default_highlights,
+  })
+
   vim.api.nvim_create_autocmd({ "FileType", "BufEnter" }, {
     group = "RainbowTags",
     callback = function(event)
