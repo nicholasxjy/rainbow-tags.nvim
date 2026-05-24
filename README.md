@@ -19,7 +19,7 @@ With `lazy.nvim`:
 
 ```lua
 {
-  "your-name/rainbow-tags.nvim",
+  "nicholasxjy/rainbow-tags.nvim",
   opts = {
     highlight_groups = {
       "RainbowTagsRed",
@@ -32,6 +32,32 @@ With `lazy.nvim`:
     },
   },
 }
+```
+
+With `vim.pack`:
+
+```lua
+vim.pack.add({
+  "https://github.com/nicholasxjy/rainbow-tags.nvim",
+})
+
+require("rainbow-tags").setup({
+  highlight_groups = {
+    "RainbowTagsRed",
+    "RainbowTagsCyan",
+    "RainbowTagsYellow",
+    "RainbowTagsGreen",
+    "RainbowTagsOrange",
+    "RainbowTagsViolet",
+    "RainbowTagsBlue",
+  },
+})
+```
+
+To update later:
+
+```vim
+:lua vim.pack.update({ "rainbow-tags.nvim" })
 ```
 
 ## Configuration
