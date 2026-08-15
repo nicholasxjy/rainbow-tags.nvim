@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.0.2 - 2026-08-15
+
+### Performance
+- Memoize tag-name to highlight-group lookups to avoid re-hashing on every redraw.
+- Replace linear filetype scanning with a hash set for O(1) checks.
+
+### Fixes
+- Clear per-buffer state on `BufDelete` so recycled buffer numbers are not highlighted incorrectly.
+
 ## 0.0.1 - 2026-05-24
 
 ### Features
