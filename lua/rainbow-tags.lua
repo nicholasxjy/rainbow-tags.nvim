@@ -50,6 +50,17 @@ local config = vim.deepcopy(default_config)
 local provider_attached = false
 local enabled_buffers = {}
 local query_cache = {}
+local group_cache = {}
+local filetype_set = {}
+
+local function rebuild_filetype_set()
+  filetype_set = {}
+  for _, ft in ipairs(config.filetypes) do
+    filetype_set[ft] = true
+  end
+end
+
+rebuild_filetype_set()
 
 local tsx_query = [[
   (jsx_opening_element
@@ -74,6 +85,8 @@ local default_highlights = {
 
 local function merge(user_config)
   config = vim.tbl_deep_extend("force", vim.deepcopy(default_config), user_config or {})
+  group_cache = {}
+  rebuild_filetype_set()
 end
 
 local function create_default_highlights()
@@ -94,8 +107,7 @@ local function create_default_highlights()
 end
 
 local function is_supported_filetype(bufnr)
-  local ft = vim.bo[bufnr].filetype
-  return vim.tbl_contains(config.filetypes, ft)
+  return filetype_set[vim.bo[bufnr].filetype] == true
 end
 
 local function should_skip_tag(name)
@@ -149,7 +161,23 @@ local function hash_name(name)
   return hash
 end
 
+local function group_for_name(name)
+  local cached = group_cache[name]
+  if cached ~= nil then
+    return cached
+  end
+
+  local groups = config.highlight_groups
+  local group = groups[(hash_name(name) % #groups) + 1]
+  group_cache[name] = group
+  return group
+end
+
 local function group_for_tag(name, index)
+  if should_skip_tag(name) then
+    return nil
+  end
+
   local groups = config.highlight_groups
   if #groups == 0 then
     return nil
@@ -159,7 +187,7 @@ local function group_for_tag(name, index)
     return groups[((index - 1) % #groups) + 1]
   end
 
-  return groups[(hash_name(name) % #groups) + 1]
+  return group_for_name(name)
 end
 
 local function render_range(bufnr, topline, botline)
@@ -189,10 +217,10 @@ local function render_range(bufnr, topline, botline)
     local start_row, start_col, end_row, end_col = node:range()
     if start_row <= botline and end_row >= topline then
       local name = vim.treesitter.get_node_text(node, bufnr)
-      if name and name ~= "" and not should_skip_tag(name) then
-        tag_index = tag_index + 1
-        local hl_group = group_for_tag(name, tag_index)
+      if name ~= "" then
+        local hl_group = group_for_tag(name, tag_index + 1)
         if hl_group then
+          tag_index = tag_index + 1
           vim.api.nvim_buf_set_extmark(bufnr, ns, start_row, start_col, {
             end_row = end_row,
             end_col = end_col,
@@ -270,6 +298,13 @@ function M.setup(user_config)
       if config.enabled and is_supported_filetype(event.buf) then
         M.enable(event.buf)
       end
+    end,
+  })
+
+  vim.api.nvim_create_autocmd("BufDelete", {
+    group = "RainbowTags",
+    callback = function(event)
+      enabled_buffers[event.buf] = nil
     end,
   })
 
